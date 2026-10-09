@@ -1,5 +1,4 @@
 import React from 'react';
-import { redirect } from 'next/navigation';
 import AdminSidebar from '@/components/AdminSidebar';
 import AdminHeader from '@/components/AdminHeader';
 import { getCurrentAdmin } from '@/lib/auth';
@@ -18,9 +17,6 @@ export default function AdminLayout({
   children: React.ReactNode;
 }) {
   const admin = getCurrentAdmin();
-  if (!admin) {
-    redirect('/admin/login');
-  }
 
   return (
     <div className="flex min-h-screen bg-slate-100 font-sans text-slate-900">
