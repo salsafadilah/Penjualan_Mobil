@@ -49,9 +49,18 @@ export function sessionCookieOptions(expires: Date) {
 export const ADMIN_COOKIE = 'as_admin';
 export const ADMIN_SESSION_HOURS = 8;
 
-export function getCurrentAdmin(): AdminUser | undefined {
+// Login admin dinonaktifkan: dashboard terbuka tanpa login
+const OPEN_ADMIN: AdminUser = {
+  id: 'open-admin',
+  nama: 'Admin',
+  username: 'admin',
+  role: 'Super Admin',
+  email: 'admin@autoshowroom.local',
+};
+
+export function getCurrentAdmin(): AdminUser {
   const token = cookies().get(ADMIN_COOKIE)?.value;
-  return token ? getAdminBySession(token) : undefined;
+  return (token ? getAdminBySession(token) : undefined) ?? OPEN_ADMIN;
 }
 
 export function toPublicAdmin(admin: AdminUser): PublicAdminUser {
@@ -61,6 +70,5 @@ export function toPublicAdmin(admin: AdminUser): PublicAdminUser {
 
 // Dipakai di route API khusus admin: kembalikan response 401 jika belum login admin
 export function requireAdmin(): NextResponse | null {
-  if (getCurrentAdmin()) return null;
-  return NextResponse.json({ success: false, error: 'Akses khusus admin. Silakan login.' }, { status: 401 });
+  return null;
 }
